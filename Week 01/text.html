@@ -1,0 +1,35 @@
+<div id="show"></div>
+
+<style>
+
+</style>
+
+
+<script>
+    let dict = {
+        '0': {color: 'green', second: 10},
+        '1': {color: 'red', second: 5},
+        '2': {color: 'yellow', second: 2},
+    };
+
+    let index = 0;
+    let sec = 0;
+    let text;
+    setInterval(() => {
+        index = sec%17;
+        console.log('index:',index);
+        
+        if (index === 0 ) {
+            text = 'green'
+        } else if (index === 10 ) {
+            text = 'red'
+        } else if (index === 15 ) {
+            text = 'yellow'
+        }
+
+        let show = document.getElementById('show');
+        show.innerHTML = text;
+        sec++;
+    }, 1000);
+
+</script>

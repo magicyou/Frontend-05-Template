@@ -1,0 +1,173 @@
+
+<div id="board" class="board"></div>
+<style>
+    .board{
+        /* background-color: aqua; */
+        width: 330px;
+        overflow: hidden;
+    }
+    .cell{
+        background-color: green;
+        height: 100px;
+        line-height: 100px;
+        width: 100px;
+        margin: 3px;
+        text-align: center;
+        float: left;
+        font-size: 32px;
+    }
+</style>
+<script>
+
+let pattern = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+];
+
+let color = 1;
+function show() {
+    let board = document.getElementById('board');
+    board.innerHTML = "";
+    for(let i = 0; i < pattern.length; i++) {
+        for(let j = 0; j < pattern[i].length; j++) {
+            let cell = document.createElement('div');
+            cell.setAttribute('class', 'cell');
+            cell.innerText =    pattern[i][j] == 0 ? '' :
+                                pattern[i][j] == 1 ? '⭕️' : '❌';
+            cell.addEventListener('click', () => {move(i, j)});
+            board.appendChild(cell);
+        }
+        board.appendChild(document.createElement('br'));
+    }
+}
+
+function move (x, y) {
+    // if (willWin(pattern, color)) {
+    //     console.log(color == 1 ? '⭕️快赢了' : '❌快赢了');
+    // }
+    pattern[x][y] = color;
+    if (check(pattern, color)) {
+        alert(color == 1 ? '⭕️赢了' : '❌赢了');
+    }
+    color = 3 - color;
+    // console.log(bestChoice(pattern, color));
+    show();
+    computerMove();
+}
+
+function computerMove() {
+    let choice = bestChoice(pattern, color);
+    console.log('choice:',choice);
+    if (choice.point) {
+        pattern[choice.point[0]][choice.point[1]] = color;
+    }
+    if (check(pattern, color)) {
+        alert(color == 1 ? '⭕️赢了' : '❌赢了');
+    }
+
+    color = 3 - color;
+    show();
+}
+
+function check(origin, color) {
+    for (let i = 0; i < 3; i++) {
+        let win = true
+        for (let j = 0; j < 3; j++) {
+            if (origin[i][j] !== color) {
+                win = false
+            }
+        }
+        if (win) {
+            return true;
+        }
+    }
+
+    for (let i = 0; i < 3; i++) {
+        let win = true
+        for (let j = 0; j < 3; j++) {
+            if (origin[j][i] !== color) {
+                win = false
+            }
+        }
+        if (win) {
+            return true;
+        }
+    }
+
+    {
+        let win = true;
+        for (let i = 0; i < 3; i++) {
+            if (origin[i][i] !== color) {
+                win = false;
+            }
+        }
+        if (win) {
+            return true;
+        }
+    }
+
+    {
+        let win = true;
+        for (let i = 0; i < 3; i++) {
+            if (origin[i][2 - i] !== color) {
+                win = false;
+            }
+        }
+        if (win) {
+            return true;
+        }
+    }
+}
+
+function clone(data) {
+    return  JSON.parse(JSON.stringify(data));
+}
+
+function willWin(pattern, color) {
+    for(let i = 0; i < 3; i++) {
+        for(let j = 0; j < 3; j++) {
+            if (pattern[i][j]) {
+                continue;
+            }
+            let temp = clone(pattern);
+            temp[i][j] = color;
+            if (check(temp, color)) {
+                return true;
+            }
+        }
+    }
+}
+
+function bestChoice(pattern, color) {
+    let p;
+    if (p = willWin(pattern, color)) {
+        return {
+            point: p,
+            result: 1
+        }
+    }
+    let result = -2;
+    let point = null;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (pattern[i][j])
+                continue;
+            let tmp = clone(pattern);
+            tmp[i][j] = color;
+            let r = bestChoice(tmp, 3- color).result;
+
+            if (-r > result) {
+                result = -r;
+                point = [j, i];
+            }
+        }   
+    }
+
+    return {
+        point: point,
+        result: point ? result : 0
+    }
+}
+show();
+</script>
