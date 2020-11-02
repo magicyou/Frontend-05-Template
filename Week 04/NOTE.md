@@ -1,22 +1,20 @@
-学习笔记
+# 学习笔记
 
-字符串分析算法
+## 知识点
+
+#### charCodeAt() 
+获取字符串指定位置的 Unicode 编码
+##### 语法
+```
+string.charCodeAt(index)
+```
+* index，必需。表示字符串中某个位置的数字，即字符在字符串中的下标。
 
 
-字典树
-大量高重复字符串的存储与分析
-
-kmp
-在长字符串李找模式
-
-wildCard
-带通配符的字符串模式
-
-正则
-字符串通用模式匹配
- 
-状态机
-通用的字符串分析
-
-LR LR
-字符串多层级结构分析
+#### fromCharCode() 
+将 Unicode 编码转为一个字符:
+##### 语法
+```
+string.charCodeAt(number0, number1, number2... )
+```
+* number0, number1, number2... ,  必须，一个或多个 Unicode 编码
