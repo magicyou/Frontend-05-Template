@@ -1,0 +1,74 @@
+<script>
+// 写一段 JS 的函数，把一个 string 它代表的字节给它转换出来，用 UTF8 对 string 进行遍码。
+function uft8Encoding (str) {
+    let utf8Arr = [];
+    if (str.length === 0) {
+        return "";
+    }
+
+    for (let i = 0; i < str.length; i++) {
+        let codePoint = str[i].codePointAt(0);
+        console.log('codePoint:', codePoint);
+      
+        if (0x00 <= codePoint && codePoint <= 0x7f) {  // 一个字节
+
+            utf8Arr.push(codePoint);
+        } else if (0x80 <= codePoint && codePoint <= 0x7ff) {  // 两个字节
+
+            utf8Arr.push((192 | (31 & (codePoint >> 6))));
+            utf8Arr.push((128 | (63 & codePoint)))
+        } else if ((0x800 <= codePoint && codePoint <= 0xd7ff) || (0xe000 <= codePoint && codePoint <= 0xffff)) {  // 四个字节
+
+            utf8Arr.push((224 | (15 & (codePoint >> 12))));
+            utf8Arr.push((128 | (63 & (codePoint >> 6))));
+            utf8Arr.push((128 | (63 & codePoint)))
+        }
+        
+    }
+
+    for (let i = 0; i < utf8Arr.length; i++) {
+        utf8Arr[i] &= 0xff;
+    }
+    return utf8Arr
+
+}
+
+// uft8Encoding('abcde');
+
+class Dog {
+    constructor(name="无名", age=1) {
+        this.name = name;
+        this.age = age;
+    }
+
+    bite (human) {
+        console.log(`小狗[${this.name}]咬到了${human.name}`);
+        human.setHurt();
+    }
+}
+
+class Human {
+    constructor(name="无名", age=1, sex="未知", isInjured=false) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;  // 性别
+        this.isInjured = isInjured;  // 是否健康
+    }
+
+    setHurt () {
+        this.isInjured = false;
+        console.log(`[${this.name}]被咬到了，受伤了`);
+    }
+}
+
+const dog1 = new Dog('MG', 2);
+const human1 = new Human('小明', 2, '女', false);
+
+console.log('dog1:', dog1);
+console.log('human1:', human1);
+
+dog1.bite(human1);
+
+
+
+</script>
