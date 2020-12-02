@@ -23,7 +23,7 @@ class Request {
         this.headers['Content-Length'] = this.bodyText.length;
     }
 
-    send () {
+    send (connection) {
         return new Promise((resolve, reject) => {
             const parser = new ResponseParser;
             if (connection) {
@@ -38,7 +38,7 @@ class Request {
             }
 
             connection.on('data', (data) => {
-                console.log(dataa.toString());
+                console.log(data.toString());
                 parser.receive(data.toString());
                 if (parser.isFinished) {
                     resolve(parser.response);
@@ -51,6 +51,10 @@ class Request {
                 connection.end();
             });
         });
+    }
+
+    toString() {
+        return `${this.method} ${this.path} HTTP/1.1\r\n${Object.keys(this.headers).map(key=>`${key}:${this.headers[key]}`).join('\r\n')}\r\n\r${this.bodyText}`;
     }
 }
 
