@@ -1,12 +1,21 @@
 # 学习笔记
 
-## 主轴计算
+## 排版
+
+* 抽离排版样式flex等
+    * 处理flexDirection和wrap相关的属性。
+    把weight, height, left, right, top, bottom的属性抽象成main cross相关的属性。
 
 * 计算主轴的方向
     * 找出所有flex元素
     * 把主轴方向的剩余尺寸按比例分配给这些元素
     * 若剩余的空间为负数，所有flex 元素为0，等比例压缩剩余元素
 
+* 计算交叉轴方向
+    * 根据每一行中最大元素尺寸计算行高
+    * 根据行高flex-align和item-align,确定元素具体位置
+
+## 绘制
 * 绘制1
     * 绘制需要依赖一个图形环境
     * 采用npm 包 images
