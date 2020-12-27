@@ -21,7 +21,9 @@ function getStyle (element) {
     return element.style;
 
 }
-
+/**
+ * @param  {} element
+ */
 function layout (element) {
 
     if (!element.computedStyle) {
